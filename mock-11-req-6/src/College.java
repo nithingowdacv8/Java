@@ -1,8 +1,7 @@
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 public class College {
 	private String name;
@@ -11,12 +10,12 @@ public class College {
 	private String founder;
 	private Integer numberOfDept;
 	private String location;
-	private Date startingDate;
+	private Date createdDate;
 	
 	public College() {}
 
 	public College(String name, String website, String mobile, String founder, Integer numberOfDept, String location,
-			Date startingDate) {
+			Date createdDate) {
 		super();
 		this.name = name;
 		this.website = website;
@@ -24,7 +23,7 @@ public class College {
 		this.founder = founder;
 		this.numberOfDept = numberOfDept;
 		this.location = location;
-		this.startingDate = startingDate;
+		this.createdDate = createdDate;
 	}
 
 	public String getName() {
@@ -75,41 +74,35 @@ public class College {
 		this.location = location;
 	}
 
-	public Date getStartingDate() {
-		return startingDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setStartingDate(Date startingDate) {
-		this.startingDate = startingDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@Override
+	public String toString() {
+		return "College [name=" + name + ", website=" + website + ", mobile=" + mobile + ", founder=" + founder
+				+ ", numberOfDept=" + numberOfDept + ", location=" + location + ", createdDate=" + createdDate + "]";
 	}
 	
-//	static Map<String, Integer> calculateLocationCount(List<College> list)
-//	{		
-//		Map<String, Integer> result=new TreeMap<>();
-//		for(College c:list)
-//		{
-//			String location=c.getLocation();
-//			//if this location is already found, get count and increment
-//			//if this location is not found, count is 1
-//			Integer count=result.get(location);
-////			if(count==null)
-////				count=0;
-//			count=(count==null)?0:count;
-//			count++;
-//			result.put(location, count);
-//		}
-//		return result;
-//	}
-	
-//	public static Collector<Object, ?, Integer> countingInt() {
-//	    return Collectors.summingInt(e -> 1);
-//	}
-//	
-
-	
-	static Map<String, Integer> calculateLocationCount(List<College> list)
+	static Map<String,Integer> calculateLocationCount(List<College> list)
 	{
-		return list.stream()
-		.collect(Collectors.groupingBy(College::getLocation, Collectors.summingInt(e->1)));
+		Map<String, Integer> map=new TreeMap<>();
+		for(College college:list)
+		{
+			String key = college.getLocation();
+			Integer value = map.get(key);
+			if(value==null)
+			{
+				value=0;
+			}
+			value++;
+			map.put(key, value);		//either adds a new entry or updates exiting entry
+		}
+		return map;		//dummy
 	}
+
 }

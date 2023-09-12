@@ -1,3 +1,5 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class College implements Comparable<College>
@@ -79,16 +81,32 @@ public class College implements Comparable<College>
 	public void setStartingDate(Date startingDate) {
 		this.startingDate = startingDate;
 	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+		return String.format("%-15s %-20s %-15s %-15s %-20s %-15s %s\n", getName(),getWebsite(),getMobile(),getFounder(),getNumberOfDept(),getLocation(),sdf.format(getStartingDate()));
+	}
 	
-	public static College createCollege(String detail)
+	public static College createCollege(String detail) throws ParseException
 	{
-		return null;		//incomplete
+		College college=new College();
+//		IIT Guwahati,www.iitg.ac.in/,9876543214,Govt of India,10,Guwahati,17-05-1994
+		String[] arr = detail.split(",");
+		college.setName(arr[0]);
+		college.setWebsite(arr[1]);
+		college.setMobile(arr[2]);
+		college.setFounder(arr[3]);
+		college.setNumberOfDept(Integer.valueOf(arr[4]));
+		college.setLocation(arr[5]);
+		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+		college.setStartingDate(sdf.parse(arr[6]));
+		return college;
 	}
 
 	@Override
 	public int compareTo(College o) {
 		return this.getName().compareTo(o.getName());
-//		return 0;
 	}
-	
+
 }
